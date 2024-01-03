@@ -15,9 +15,9 @@ const FormSchema = z.object({
 
 
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
+const invoicesPath = '/dashboard/invoices';
 
 function successAction() {
-  const invoicesPath = '/dashboard/invoices';
   revalidatePath(invoicesPath);
   redirect(invoicesPath);
 }
@@ -59,4 +59,9 @@ export async function updateInvoice(id: string, formData: FormData) {
   `;
  
   successAction();
+}
+
+export async function deleteInvoice(id: string) {
+  await sql`DELETE FROM invoices WHERE id = ${id}`;
+  revalidatePath(invoicesPath);
 }
